@@ -1,3 +1,5 @@
+package Activation;
+
 public interface Activation {
     double CalculateActivation(double[] inputs, int index);
     

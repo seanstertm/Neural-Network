@@ -1,5 +1,5 @@
-public class LayerLearnData
-{
+package NeuralNetwork;
+public class LayerLearnData {
 	public double[] inputs;
 	public double[] weightedInputs;
 	public double[] activations;

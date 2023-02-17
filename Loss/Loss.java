@@ -1,3 +1,5 @@
+package Loss;
+
 public interface Loss {
     double CalculateLoss(double[] outputs, double[] expectedOutputs);
 

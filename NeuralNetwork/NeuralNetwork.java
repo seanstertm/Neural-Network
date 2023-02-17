@@ -1,3 +1,10 @@
+package NeuralNetwork;
+
+import DataControl.DataPoint;
+import DataControl.NetworkOutput;
+import Loss.Loss;
+import Run.CONFIG;
+
 public class NeuralNetwork {
     public Layer[] layers;
     public int[] layerSizes;

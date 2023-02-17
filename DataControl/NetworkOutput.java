@@ -1,3 +1,4 @@
+package DataControl;
 public class NetworkOutput {
     public int predictedClass;
     public double[] outputs;

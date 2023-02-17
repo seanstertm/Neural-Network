@@ -1,3 +1,5 @@
+package DataControl;
+
 public class Batch {
     public DataPoint[] data;
 

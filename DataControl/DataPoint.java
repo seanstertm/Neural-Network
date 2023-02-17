@@ -1,3 +1,4 @@
+package DataControl;
 public class DataPoint {
     public double[] inputs;
     public double[] expectedOutputs;

@@ -1,7 +1,12 @@
+package Run;
+
 // These are not real JSONs, only my files can interpret these numbers
 // This is done because codehs does not support external libraries
 
 import java.util.Arrays;
+
+import NeuralNetwork.NeuralNetwork;
+
 import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;

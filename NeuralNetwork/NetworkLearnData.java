@@ -1,5 +1,5 @@
-public class NetworkLearnData
-{
+package NeuralNetwork;
+public class NetworkLearnData {
 	public LayerLearnData[] layerData;
 
 	public NetworkLearnData(Layer[] layers)
