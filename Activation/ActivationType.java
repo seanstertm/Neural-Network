@@ -1,4 +1,4 @@
-package Activation;
+package activation;
 
 public enum ActivationType{
     Sigmoid

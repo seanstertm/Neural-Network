@@ -1,4 +1,4 @@
-package Loss;
+package loss;
 
 public enum LossType {
     MeanSquareError

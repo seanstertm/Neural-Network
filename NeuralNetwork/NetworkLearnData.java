@@ -1,4 +1,4 @@
-package NeuralNetwork;
+package neuralnetwork;
 public class NetworkLearnData {
 	public LayerLearnData[] layerData;
 

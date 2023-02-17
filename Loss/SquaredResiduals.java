@@ -1,4 +1,4 @@
-package Loss;
+package loss;
 
 public class SquaredResiduals implements Loss {
     public double CalculateLoss(double[] predictedOutputs, double[] expectedOutputs)

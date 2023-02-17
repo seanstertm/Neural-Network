@@ -1,4 +1,4 @@
-package Activation;
+package activation;
 
 public class Sigmoid implements Activation {
     public double CalculateActivation(double[] inputs, int index)

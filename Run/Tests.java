@@ -1,14 +1,14 @@
-package Run;
+package run;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.*;
 
-import DataControl.Batch;
-import DataControl.DataHandler;
-import DataControl.DataPoint;
-import DataControl.NetworkOutput;
-import NeuralNetwork.NeuralNetwork;
+import datacontrol.Batch;
+import datacontrol.DataHandler;
+import datacontrol.DataPoint;
+import datacontrol.NetworkOutput;
+import neuralnetwork.NeuralNetwork;
 
 public class Tests {
     public static void main(String[] args) {
@@ -90,8 +90,9 @@ public class Tests {
     }
 
     public static void Stringify() {
-        NeuralNetwork network = new NeuralNetwork(2, 3, 2);
-        NetworkSave.SaveNetwork(network);
+        NeuralNetwork network = NetworkSave.LoadNetwork();
+
+        System.out.println(network);
     }
 
     public static void SmallerOfTwoNumbersTest() {

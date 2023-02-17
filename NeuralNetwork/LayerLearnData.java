@@ -1,4 +1,4 @@
-package NeuralNetwork;
+package neuralnetwork;
 public class LayerLearnData {
 	public double[] inputs;
 	public double[] weightedInputs;

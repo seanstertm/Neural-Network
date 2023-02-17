@@ -1,9 +1,9 @@
-package NeuralNetwork;
+package neuralnetwork;
 
-import DataControl.DataPoint;
-import DataControl.NetworkOutput;
-import Loss.Loss;
-import Run.CONFIG;
+import datacontrol.DataPoint;
+import datacontrol.NetworkOutput;
+import loss.Loss;
+import run.CONFIG;
 
 public class NeuralNetwork {
     public Layer[] layers;

@@ -1,9 +1,9 @@
-package Run;
+package run;
 
-import Activation.Activation;
-import Activation.Sigmoid;
-import Loss.Loss;
-import Loss.SquaredResiduals;
+import activation.Activation;
+import activation.Sigmoid;
+import loss.Loss;
+import loss.SquaredResiduals;
 
 public class CONFIG {
     public static Activation activationType = new Sigmoid();

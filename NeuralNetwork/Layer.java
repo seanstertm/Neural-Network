@@ -1,10 +1,10 @@
-package NeuralNetwork;
+package neuralnetwork;
 
 import java.util.Random;
 
-import Activation.Activation;
-import Loss.Loss;
-import Run.CONFIG;
+import activation.Activation;
+import loss.Loss;
+import run.CONFIG;
 
 public class Layer {
     public int numNodesIn;
