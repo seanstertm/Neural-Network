@@ -1,5 +1,7 @@
 package activation;
 
 public enum ActivationType{
-    Sigmoid
+    Sigmoid,
+    TanH,
+    ReLU
 }

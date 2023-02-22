@@ -1,10 +1,11 @@
 package run;
 
+import java.awt.image.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.*;
+import javax.imageio.ImageIO;
 
-import datacontrol.Batch;
 import datacontrol.DataHandler;
 import datacontrol.DataPoint;
 import datacontrol.NetworkOutput;
@@ -12,43 +13,53 @@ import neuralnetwork.NeuralNetwork;
 
 public class Tests {
     public static void main(String[] args) {
-        Stringify();
+        Mnist(true, true);
     }
 
-    public static void Mnist() {
-        DataPoint[] data = ReadMnist(true);
+    public static void Mnist(boolean useExisting, boolean train) {
+        NeuralNetwork network;
 
-        NeuralNetwork network = new NeuralNetwork(784, 300, 10);
-
-        for(int epoch = 0; epoch < 2000; epoch++) {
-            DataHandler.splitData(data, 100, 0.8);
-
-            for(Batch batch : DataHandler.trainingBatches) {
-                network.Learn(batch.data);
-            }
-
-            int correct = 0;
-            for(DataPoint dataPoint : DataHandler.testData) {
-                NetworkOutput output = network.Classify(dataPoint.inputs);
-                if(dataPoint.expectedOutputs[output.predictedClass] == 1) {
-                    correct++;
-                }
-            }
-
-            System.out.println("Epoch: " + epoch + " Test accuracy: " + 100.0 * correct / DataHandler.testData.length + "%");
+        if(useExisting) {
+            network = NetworkSave.LoadNetwork();
+        } else {
+            network = new NeuralNetwork(784, 300, 200, 50, 10);
         }
 
-        System.out.println("\n\n\n\n\n----------------\n\n\n\n\n");
+        if(train) { 
+            DataPoint[] data = ReadMnist(false);
 
-        for(DataPoint dataPoint : DataHandler.testData) {
-            NetworkOutput output = network.Classify(dataPoint.inputs);
-            System.out.println("Image: " + dataPoint.label + "  Guess: " + output.predictedClass + "  Confidence: " + output.outputs[output.predictedClass]);
+            DataHandler.Train(network, 20, data, 100, 0.8);
+        }
+
+        byte[] image = imageToBytes("run/drawing.jpg");
+        double[] inputs = new double[image.length / 3];
+        for(int i = 0; i < image.length; i+=3) {
+            int pixel = image[i];
+            if(pixel < 0) { pixel += 256; }
+            inputs[i / 3] = pixel / 256.0;
+        }
+
+        NetworkOutput output = network.Classify(inputs);
+        System.out.println("\nPredicted number is: " + output.predictedClass);
+        for(int i = 0; i < output.outputs.length; i++) {
+            System.out.println(i +" confidence: " + Math.round(output.outputs[i] * 10000) / 100 + "%");
+        }
+    }
+
+    public static byte[] imageToBytes(String path) {
+        try {
+            WritableRaster raster = ImageIO.read(new File(path)).getRaster();
+            DataBufferByte data = (DataBufferByte) raster.getDataBuffer();
+            return data.getData();
+        } catch(Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
     public static DataPoint[] ReadMnist(boolean test) {
         try {
-            int size = test ? 1000 : 6000;
+            int size = test ? 1000 : 10000;
 
             File file = new File(test ? "Data/mnistTestLabels.idx1-ubyte" : "Data/mnistTrainLabels.idx1-ubyte");
             byte[] contents = new byte[(int)file.length()];
@@ -89,43 +100,29 @@ public class Tests {
         }
     }
 
-    public static void Stringify() {
-        NeuralNetwork network = NetworkSave.LoadNetwork();
-
-        System.out.println(network);
-    }
-
-    public static void SmallerOfTwoNumbersTest() {
+    public static void SmallerOfTwoNumbersTest(boolean useExisting) {
         Random rng = new Random();
-
         Scanner input = new Scanner(System.in);
+        NeuralNetwork network;
 
-        NeuralNetwork network = new NeuralNetwork(2, 3, 2);
+        if(useExisting) {
+            network = NetworkSave.LoadNetwork();
+        } else {
+            network = new NeuralNetwork(2, 3, 2);
 
-        for(int epoch = 0; epoch < 50; epoch++) {
             DataPoint[] randomData = new DataPoint[50000];
             for(int i = 0; i < randomData.length; i++) {
                 double x = rng.nextDouble();
                 double y = rng.nextDouble();
                 randomData[i] = new DataPoint(new double[]{x, y}, x > y ? 1 : 0, 2);
             }
-            DataHandler.splitData(randomData, 50, 0.8);
 
-            for(int i = 0; i < DataHandler.trainingBatches.length; i++) {
-                network.Learn(DataHandler.trainingBatches[i].data);
-            }
+            DataHandler.Train(network, 500, randomData, 50, 0.8);
 
-            int correct = 0;
-
-            for(int i = 0; i < DataHandler.testData.length; i++) {
-                NetworkOutput output = network.Classify(DataHandler.testData[i].inputs);
-                if(DataHandler.testData[i].expectedOutputs[output.predictedClass] ==  1) {
-                    correct++;
-                }
-            }
-
-            System.out.println(100.0 * correct / DataHandler.testData.length + "% accuracy for testing data");
+            NetworkSave.SaveNetwork(network);
         }
+
+        
 
         double[] inputs = new double[2];
         System.out.print("Finished Training\n\nEnter a double: ");
