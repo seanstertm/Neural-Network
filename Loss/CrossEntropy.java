@@ -1,5 +1,6 @@
 package loss;
 
+// https://en.wikipedia.org/wiki/Cross_entropy
 public class CrossEntropy implements Loss {
     public double CalculateLoss(double[] outputs, double[] expectedOutputs) {
         double loss = 0;

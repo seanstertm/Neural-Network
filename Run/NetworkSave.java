@@ -1,13 +1,14 @@
 package run;
 
 import java.util.Arrays;
-
-import neuralnetwork.NeuralNetwork;
-
 import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import neuralnetwork.NeuralNetwork;
+
+// Stringifies the network
+// Format: [size][weightsLayer0][biasesLayer0][weightsLayer1][biasesLayer1] etc
 public class NetworkSave {
     public static String StringifyNetwork(NeuralNetwork network) {
         String string = Arrays.toString(network.layerSizes);
@@ -51,6 +52,7 @@ public class NetworkSave {
         return network;
     }
 
+    // Generally you will use the following two functions to deal with files
     public static void SaveNetwork(NeuralNetwork network) {
         try{
             FileWriter writer = new FileWriter("Run/network.txt");
@@ -70,6 +72,4 @@ public class NetworkSave {
             return null;
         }
     }
-
-    // Double.parseDouble()
 }

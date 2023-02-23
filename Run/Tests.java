@@ -19,6 +19,7 @@ public class Tests {
         Mnist(true, false);
     }
 
+    // Entry method for the Mnist test
     public static void Mnist(boolean useExisting, boolean train) {
         NeuralNetwork network;
 
@@ -38,12 +39,14 @@ public class Tests {
 
         byte[] image = new byte[flippedImage.length];
 
+        // Flips image
         for(int i = 27; i >= 0; i--) {
             for(int j = 0; j < 28 * 3; j++) {
                 image[28 * 3 * (27 - i) + j] = flippedImage[28 * 3 * i + j];
             }
         }
 
+        // Returns only the red pixel
         double[] inputs = new double[image.length / 3];
         for(int i = 0; i < image.length; i+=3) {
             int pixel = image[i];

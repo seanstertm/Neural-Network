@@ -1,5 +1,6 @@
 package loss;
 
+// https://en.wikipedia.org/wiki/Residual_sum_of_squares
 public class SquaredResiduals implements Loss {
     public double CalculateLoss(double[] predictedOutputs, double[] expectedOutputs)
     {

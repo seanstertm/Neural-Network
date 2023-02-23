@@ -1,4 +1,7 @@
 package datacontrol;
+
+// Class that contains both the output of the network and
+// what the network thinks the correct answer is
 public class NetworkOutput {
     public int predictedClass;
     public double[] outputs;
@@ -8,6 +11,7 @@ public class NetworkOutput {
         this.predictedClass = predictedClass;
     }
 
+    // Ease of use function to print the outputs
     public String toString() {
         String sentence = "returned index: " + predictedClass;
         for(double output : outputs) {
