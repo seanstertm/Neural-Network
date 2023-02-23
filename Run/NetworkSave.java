@@ -1,8 +1,5 @@
 package run;
 
-// These are not real JSONs, only my files can interpret these numbers
-// This is done because codehs does not support external libraries
-
 import java.util.Arrays;
 
 import neuralnetwork.NeuralNetwork;
