@@ -1,5 +1,6 @@
 package activation;
 
+// https://en.wikipedia.org/wiki/Hyperbolic_functions
 public class TanH implements Activation {
     public double CalculateActivation(double[] inputs, int index)
     {

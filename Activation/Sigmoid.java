@@ -1,5 +1,6 @@
 package activation;
 
+// https://en.wikipedia.org/wiki/Sigmoid_function
 public class Sigmoid implements Activation {
     public double CalculateActivation(double[] inputs, int index)
     {

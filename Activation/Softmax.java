@@ -1,5 +1,7 @@
 package activation;
 
+// https://en.wikipedia.org/wiki/Softmax_function
+// This function is used as the output of the network for confidence
 public class Softmax implements Activation {
     public double CalculateActivation(double[] inputs, int index) {
         double expSum = 0;

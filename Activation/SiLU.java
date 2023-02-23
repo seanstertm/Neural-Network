@@ -1,5 +1,6 @@
 package activation;
 
+// https://en.wikipedia.org/wiki/Swish_function
 public class SiLU implements Activation {
     public double CalculateActivation(double[] inputs, int index) {
         return inputs[index] / (1 + Math.exp(-inputs[index]));

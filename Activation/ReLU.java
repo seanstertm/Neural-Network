@@ -1,5 +1,6 @@
 package activation;
 
+// https://en.wikipedia.org/wiki/Rectifier_(neural_networks)
 public class ReLU implements Activation {
     public double CalculateActivation(double[] inputs, int index)
     {
