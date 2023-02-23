@@ -11,9 +11,12 @@ import datacontrol.DataPoint;
 import datacontrol.NetworkOutput;
 import neuralnetwork.NeuralNetwork;
 
+// This is the main runner file for the network experiments
+// For most methods, a try catch must be used for File exceptions
+// although these will not happen in my computer's environment
 public class Tests {
     public static void main(String[] args) {
-        Mnist(true, true);
+        Mnist(true, false);
     }
 
     public static void Mnist(boolean useExisting, boolean train) {
@@ -31,11 +34,21 @@ public class Tests {
             DataHandler.Train(network, 20, data, 100, 0.8);
         }
 
-        byte[] image = imageToBytes("run/drawing.jpg");
+        byte[] flippedImage = imageToBytes("run/drawing.jpg");
+
+        byte[] image = new byte[flippedImage.length];
+
+        for(int i = 27; i >= 0; i--) {
+            for(int j = 0; j < 28 * 3; j++) {
+                image[28 * 3 * (27 - i) + j] = flippedImage[28 * 3 * i + j];
+            }
+        }
+
         double[] inputs = new double[image.length / 3];
         for(int i = 0; i < image.length; i+=3) {
             int pixel = image[i];
             if(pixel < 0) { pixel += 256; }
+            pixel = 256 - pixel;
             inputs[i / 3] = pixel / 256.0;
         }
 
@@ -46,6 +59,8 @@ public class Tests {
         }
     }
 
+    // Turns an image into a byte array
+    // Does not conserve color and will return the reds only
     public static byte[] imageToBytes(String path) {
         try {
             WritableRaster raster = ImageIO.read(new File(path)).getRaster();
@@ -57,6 +72,7 @@ public class Tests {
         }
     }
 
+    // Creates an array of DataPoints from the mnist dataset
     public static DataPoint[] ReadMnist(boolean test) {
         try {
             int size = test ? 1000 : 10000;
@@ -85,6 +101,7 @@ public class Tests {
                 double[] inputs = new double[28*28];
                 for(int pixelCount = 0; pixelCount < 28 * 28; pixelCount++) {
                     int pixel = contents[i];
+                    // This converts unsigned bytes to signed integers
                     if(pixel < 0) { pixel += 256; }
                     inputs[pixelCount] = pixel / 256.0;
                     i++;
@@ -100,6 +117,7 @@ public class Tests {
         }
     }
 
+    // Initial training of the neural network to test
     public static void SmallerOfTwoNumbersTest(boolean useExisting) {
         Random rng = new Random();
         Scanner input = new Scanner(System.in);
@@ -110,6 +128,7 @@ public class Tests {
         } else {
             network = new NeuralNetwork(2, 3, 2);
 
+            // Loads 50,000 random data points and assigns the expected outputs based on the smaller number
             DataPoint[] randomData = new DataPoint[50000];
             for(int i = 0; i < randomData.length; i++) {
                 double x = rng.nextDouble();
