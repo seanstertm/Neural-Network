@@ -1,6 +1,6 @@
 package neuralnetwork;
 
-import activation.Sigmoid;
+import activation.Softmax;
 import datacontrol.DataPoint;
 import datacontrol.NetworkOutput;
 import loss.Loss;
@@ -21,7 +21,7 @@ public class NeuralNetwork {
             layers[i] = new Layer(layerSizes[i], layerSizes[i + 1]);
         }
 
-        layers[layers.length - 1].activation = new Sigmoid();
+        layers[layers.length - 1].activation = new Softmax();
 
         loss = CONFIG.lossType;
     }

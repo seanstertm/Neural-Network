@@ -22,13 +22,13 @@ public class Tests {
         if(useExisting) {
             network = NetworkSave.LoadNetwork();
         } else {
-            network = new NeuralNetwork(784, 300, 200, 50, 10);
+            network = new NeuralNetwork(784, 300, 10);
         }
 
         if(train) { 
             DataPoint[] data = ReadMnist(false);
 
-            DataHandler.Train(network, 20, data, 100, 0.8);
+            DataHandler.Train(network, 1000, data, 100, 0.8);
         }
 
         byte[] image = imageToBytes("run/drawing.jpg");
