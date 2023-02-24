@@ -6,10 +6,14 @@ import activation.Activation;
 import loss.Loss;
 import run.CONFIG;
 
+// The layer code contains the individual node wieghts and biases
+// and functions to change and calculate those weights and biases
 public class Layer {
     public int numNodesIn;
     public int numNodesOut;
 
+    // Weights is practically a 2d array, but flattened to 1d
+    // for performance and ease of iteration
     public double[] weights;
     public double[] biases;
 
@@ -19,6 +23,8 @@ public class Layer {
     public double[] weightVelocities;
     public double[] biasVelocities;
 
+    // Allows each layer to have an individual activation
+    // mainly so the last layer can have softmax
     public Activation activation;
 
     public Layer(int numNodesIn, int numNodesOut) {
@@ -37,7 +43,10 @@ public class Layer {
         InitializeRandomWeights();
     }
 
+    // Calculates the layer outputs
     public double[] CalculateOutputs(double[] inputs) {
+
+        // Runs the inputs through the network, getting each output
         double[] weightedInputs = new double[numNodesOut];
         for(int nodeOut = 0; nodeOut < numNodesOut; nodeOut++) {
             double weightedInput = biases[nodeOut];
@@ -47,6 +56,7 @@ public class Layer {
             weightedInputs[nodeOut] = weightedInput;
         }
 
+        // Apply the activation function to each input
         double[] activations = new double[numNodesOut];
         for(int nodeOut = 0; nodeOut < numNodesOut; nodeOut++) {
             activations[nodeOut] = activation.CalculateActivation(weightedInputs, nodeOut);
@@ -54,6 +64,8 @@ public class Layer {
         return activations;
     }
 
+    // Overload with the learn data
+    // Data gets stored in the learn data object
     public double[] CalculateOutputs(double[] inputs, LayerLearnData learnData) {
         learnData.inputs = inputs;
         for(int nodeOut = 0; nodeOut < numNodesOut; nodeOut++) {
@@ -70,25 +82,31 @@ public class Layer {
         return learnData.activations;
     }
 
+    // This calculates the partial derivatives and updates the gradients
+    // This technique is called gradient descent and uses
+    // derivatives to minimize the loss function
     public void UpdateGradients(LayerLearnData layerLearnData)
 	{
-			for (int nodeOut = 0; nodeOut < numNodesOut; nodeOut++)
-			{
-				double nodeValue = layerLearnData.nodeValues[nodeOut];
-				for (int nodeIn = 0; nodeIn < numNodesIn; nodeIn++)
-				{
-					double derivativeCostWrtWeight = layerLearnData.inputs[nodeIn] * nodeValue;
-					lossGradientWeights[GetWeightIndex(nodeIn, nodeOut)] += derivativeCostWrtWeight;
-				}
-			}
+        // Update gradients by using node values
+        for (int nodeOut = 0; nodeOut < numNodesOut; nodeOut++)
+        {
+            double nodeValue = layerLearnData.nodeValues[nodeOut];
+            for (int nodeIn = 0; nodeIn < numNodesIn; nodeIn++)
+            {
+                double derivativeCostWrtWeight = layerLearnData.inputs[nodeIn] * nodeValue;
+                lossGradientWeights[GetWeightIndex(nodeIn, nodeOut)] += derivativeCostWrtWeight;
+            }
+        }
 
-			for (int nodeOut = 0; nodeOut < numNodesOut; nodeOut++)
-			{
-				double derivativeCostWrtBias = 1 * layerLearnData.nodeValues[nodeOut];
-				lossGradientBiases[nodeOut] += derivativeCostWrtBias;
-			}
+        // Update gradients for biases
+        for (int nodeOut = 0; nodeOut < numNodesOut; nodeOut++)
+        {
+            double derivativeCostBias = layerLearnData.nodeValues[nodeOut];
+            lossGradientBiases[nodeOut] += derivativeCostBias;
+        }
 	}
 
+    // Set the node values of the layer data object for the last layer
     public void CalculateOutputLayerNodeValues(LayerLearnData layerLearnData, double[] expectedOutputs, Loss loss)
 	{
 		for (int i = 0; i < layerLearnData.nodeValues.length; i++)
@@ -99,6 +117,7 @@ public class Layer {
 		}
 	}
 
+    // Sets the node values of the hidden layer using the last layer's derivative
     public void CalculateHiddenLayerNodeValues(LayerLearnData layerLearnData, Layer oldLayer, double[] oldNodeValues)
 	{
 		for (int newNodeIndex = 0; newNodeIndex < numNodesOut; newNodeIndex++)
@@ -115,6 +134,8 @@ public class Layer {
 
 	}
 
+    // Applies the gradient arrays to the weights and biases with other parameters
+    // Also resets the gradient to 0
     public void ApplyGradients(double learnRate, double regularization, double momentum)
 	{
 		double weightDecay = (1 - regularization * learnRate);
@@ -137,15 +158,17 @@ public class Layer {
 		}
 	}
 
+    // Returns the weight given [][]
     public double GetWeight(int nodeIn, int nodeOut) {
-        int flattenedIndex = nodeOut * numNodesIn + nodeIn;
-        return weights[flattenedIndex];
+        return weights[GetWeightIndex(nodeIn, nodeOut)];
     }
 
+    // Since weights is a 1d array, translates [][] to []
     public int GetWeightIndex(int nodeIn, int nodeOut) {
         return nodeOut * numNodesIn + nodeIn;
     }
 
+    // Creates random weights based on the normal curve
     private void InitializeRandomWeights() {
         Random rng = new Random();
 

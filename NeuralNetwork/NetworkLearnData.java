@@ -1,4 +1,6 @@
 package neuralnetwork;
+
+// This holds an array of layer data
 public class NetworkLearnData {
 	public LayerLearnData[] layerData;
 
