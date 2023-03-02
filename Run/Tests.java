@@ -16,6 +16,7 @@ import neuralnetwork.NeuralNetwork;
 // although these will not happen in my computer's environment
 public class Tests {
     public static void main(String[] args) {
+        System.out.println(System.lineSeparator().repeat(50));
         Mnist(true, false);
     }
 
